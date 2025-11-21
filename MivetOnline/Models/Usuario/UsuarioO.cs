@@ -41,6 +41,7 @@ namespace MivetOnline.Models.Usuario
         public long ide_doc { get; set; }
 
         [DisplayName("Rol")]
+
         public long ide_rol { get; set; }
     }
 }
