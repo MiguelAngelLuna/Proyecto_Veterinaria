@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Cita\" />
+    <Folder Include="Models\Mascota\" />
+  </ItemGroup>
+
 </Project>
