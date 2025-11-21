@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MivetOnline.Models;
+using VeterinariaWebApp.Models;
 
 namespace MivetOnline.Controllers
 {
@@ -13,10 +14,57 @@ namespace MivetOnline.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index()
+        {
+
+            var rol = HttpContext.Session.GetString("Rol");
+
+            if (rol == "Cliente")
+            {
+                return RedirectToAction("Index", "Cliente");
+            }
+
+
+            return View();
+        }
+
+
+        public IActionResult Nosotros()
         {
             return View();
         }
+
+
+        public IActionResult Servicios()
+        {
+            return View();
+        }
+
+
+        public IActionResult Contacto()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnviarContacto(string nombre, string email, string mensaje)
+        {
+            try
+            {
+
+                TempData["SuccessMessage"] = "Mensaje enviado correctamente. Nos pondremos en contacto pronto.";
+                return RedirectToAction("Contacto");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Error al enviar el mensaje: {ex.Message}";
+                return View("Contacto");
+            }
+        }
+
 
         public IActionResult Privacy()
         {
