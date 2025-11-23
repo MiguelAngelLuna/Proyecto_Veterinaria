@@ -1,0 +1,184 @@
+@model List<MivetOnline.Models.Usuario.CitaCliente>
+
+@{
+    ViewData["Title"] = "Mis Pagos";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+        <i class="fas fa-money-bill-wave text-success"></i> Mis Pagos
+    </h1>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-success">
+            <i class="fas fa-receipt"></i> Historial de Pagos
+        </h6>
+    </div>
+    <div class="card-body">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID Cita</th>
+                            <th>Fecha Cita</th>
+                            <th>Mascota</th>
+                            <th>Veterinario</th>
+                            <th>Especialidad</th>
+                            <th>Monto Pagado</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cita in Model)
+                        {
+                            <tr>
+                                <td><strong>#@cita.ide_cit</strong></td>
+                                <td>@cita.cal_cit.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <i class="fas fa-paw text-primary"></i> @cita.mascota
+                                    <br><small class="text-muted">@cita.especie</small>
+                                </td>
+                                <td>@cita.veterinario</td>
+                                <td>
+                                    <span class="badge badge-info">@cita.especialidad</span>
+                                </td>
+                                <td class="text-right">
+                                    <strong class="text-success">S/ @cita.mon_pag.ToString("N2")</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check-circle"></i> Pagado
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-right"><strong>Total Pagado:</strong></td>
+                            <td class="text-right">
+                                <strong class="text-success h5">S/ @Model.Sum(c => c.mon_pag).ToString("N2")</strong>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle fa-3x mb-3"></i>
+                <h5>No tienes pagos registrados</h5>
+                <p>Cuando agendes una cita y realices el pago, aparecerá aquí.</p>
+                <a href="@Url.Action("Agendar", "Cita")" class="btn btn-success">
+                    <i class="fas fa-calendar-plus"></i> Agendar Cita
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Resumen de Pagos -->
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total de Pagos
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Count</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-receipt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Monto Total Pagado
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">S/ @Model.Sum(c => c.mon_pag).ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Promedio por Cita
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">S/ @Model.Average(c => c.mon_pag).ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calculator fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "order": [[1, "desc"]]
+            });
+        });
+    </script>
+}
+
+<style>
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+
+    .border-left-info {
+        border-left: 0.25rem solid #36b9cc !important;
+    }
+</style>
