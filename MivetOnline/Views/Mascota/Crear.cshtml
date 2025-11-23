@@ -1,0 +1,123 @@
+@model MivetOnline.Models.Mascota.MascotaO
+
+@{
+    ViewData["Title"] = "Registrar Mascota";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+        <i class="fas fa-plus-circle text-success"></i> Registrar Nueva Mascota
+    </h1>
+    <a href="@Url.Action("Index", "Mascota")" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver
+    </a>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle"></i> @ViewBag.Error
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4 border-success">
+            <div class="card-header py-3 bg-success text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-paw"></i> Datos de la Mascota
+                </h6>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Mascota" asp-action="Agregar" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group mb-3">
+                        <label asp-for="nom_mas" class="form-label font-weight-bold">
+                            <i class="fas fa-tag text-success"></i> Nombre de la Mascota
+                        </label>
+                        <input asp-for="nom_mas" type="text" class="form-control" placeholder="Ej: Max, Luna, Bobby" required />
+                        <span asp-validation-for="nom_mas" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="esp_mas" class="form-label font-weight-bold">
+                            <i class="fas fa-paw text-success"></i> Especie
+                        </label>
+                        <select asp-for="esp_mas" class="form-control" required>
+                            <option value="">Seleccione una especie...</option>
+                            <option value="Perro">🐕 Perro</option>
+                            <option value="Gato">🐈 Gato</option>
+                            <option value="Conejo">🐇 Conejo</option>
+                            <option value="Ave">🐦 Ave</option>
+                            <option value="Hamster">🐹 Hamster</option>
+                            <option value="Pez">🐠 Pez</option>
+                            <option value="Otro">🦎 Otro</option>
+                        </select>
+                        <span asp-validation-for="esp_mas" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="raz_mas" class="form-label font-weight-bold">
+                            <i class="fas fa-dna text-success"></i> Raza (Opcional)
+                        </label>
+                        <input asp-for="raz_mas" type="text" class="form-control" placeholder="Ej: Labrador, Persa, Angora" />
+                        <span asp-validation-for="raz_mas" class="text-danger"></span>
+                        <small class="form-text text-muted">Si no conoces la raza, puedes dejarlo en blanco</small>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="fna_mas" class="form-label font-weight-bold">
+                            <i class="fas fa-calendar-alt text-success"></i> Fecha de Nacimiento
+                        </label>
+                        <input asp-for="fna_mas" type="date" class="form-control" required />
+                        <span asp-validation-for="fna_mas" class="text-danger"></span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fas fa-save"></i> Registrar Mascota
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Mascota")" class="btn btn-secondary btn-block">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tarjeta de ayuda -->
+        <div class="card shadow border-left-success">
+            <div class="card-body">
+                <h6 class="font-weight-bold text-success">
+                    <i class="fas fa-lightbulb"></i> Consejos:
+                </h6>
+                <ul class="mb-0">
+                    <li>Asegúrate de ingresar el nombre correcto de tu mascota</li>
+                    <li>La fecha de nacimiento nos ayuda a calcular su edad</li>
+                    <li>Puedes registrar mascotas de cualquier especie</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+</style>
