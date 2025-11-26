@@ -1,0 +1,265 @@
+@{
+    var idUsuario = Context.Session.GetInt32("IdUsuario");
+    var correo = Context.Session.GetString("Correo");
+    var rol = Context.Session.GetString("Rol");
+
+    // Validación de seguridad
+    if (idUsuario == null || rol != "Cliente")
+    {
+        Context.Response.Redirect("/Login");
+        return;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="MiVet Online - Sistema de gestión veterinaria" />
+    <meta name="author" content="MiVet Online" />
+
+    <title>MiVet Online - Cliente</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+    <link href="~/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/vendor/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/css/mivet-custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index", "Cliente")">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">MI VET ONLINE</div>
+            </a>
+
+            <hr class="sidebar-divider my-0" />
+
+            <!-- Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="@Url.Action("Index", "Cliente")">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-heading">Gestión de Citas:</div>
+
+            <!--   Mis Citas -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("MisCitas", "Cliente")">
+                    <i class="fas fa-fw fa-calendar-check"></i>
+                    <span>Mis Citas</span>
+                </a>
+            </li>
+
+            <!--   Agendar Cita -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Agendar", "Cita")">
+                    <i class="fas fa-fw fa-calendar-plus"></i>
+                    <span>Agendar Cita</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-heading">Mis Mascotas:</div>
+
+            <!--  Lista de Mascotas -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "Mascota")">
+                    <i class="fas fa-fw fa-dog"></i>
+                    <span>Mis Mascotas</span>
+                </a>
+            </li>
+
+            <!--  Agregar Mascota -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Crear", "Mascota")">
+                    <i class="fas fa-fw fa-plus-circle"></i>
+                    <span>Nueva Mascota</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-heading">Gestión de Pagos:</div>
+
+            <!-- Pagos  -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("PagosCliente", "Pago")">
+                    <i class="fas fa-fw fa-credit-card"></i>
+                    <span>Mis Pagos</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block" />
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                  
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@correo</span>
+                                <img class="img-profile rounded-circle" src="~/img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+
+                                <!-- Ver Perfil -->
+                                <a class="dropdown-item" href="@Url.Action("MiPerfil", "Cliente")">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Mi Perfil
+                                </a>
+                                <!--  Editar Perfil -->
+                                <a class="dropdown-item" href="@Url.Action("Editar", "Cliente")">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Editar Perfil
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Cerrar Sesión -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar sesión
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!--Contenedor único de alertas -->
+                    <div id="alert-container">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show auto-dismiss" role="alert">
+                                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show auto-dismiss" role="alert">
+                                <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
+
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show auto-dismiss" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i> @ViewBag.Error
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                    @RenderBody()
+                </div>
+                <!-- End of Page Content -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        MiVet Online &copy; <span id="year"></span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Modal de Logout -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro de que quieres salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Haz clic en "Cerrar sesión" si deseas finalizar tu sesión y salir.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+               
+                    <a class="btn btn-danger" href="@Url.Action("CerrarSesion", "Login")">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        document.getElementById('year').textContent = currentYear;
+
+        // ocultar alertas después de 4 segundos
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.auto-dismiss').fadeOut('slow', function() {
+                    $(this).alert('close');
+                });
+            }, 4000);
+        });
+    </script>
+
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/js/sb-admin-2.js"></script>
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

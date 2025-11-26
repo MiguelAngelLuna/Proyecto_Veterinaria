@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Mi Perfil";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+        <i class="fas fa-user text-primary"></i> Mi Perfil
+    </h1>
+    <a href="@Url.Action("Editar", "Cliente")" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-edit fa-sm text-white-50"></i> Editar Perfil
+    </a>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <!-- Tarjeta de Perfil -->
+        <div class="card shadow mb-4">
+            <div class="card-body text-center">
+                <img class="img-profile rounded-circle mb-3" src="~/img/undraw_profile.svg" style="width: 120px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%2260%22 fill=%22%234e73df%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dy=%22.3em%22 text-anchor=%22middle%22 font-size=%2248%22 fill=%22white%22%3E👤%3C/text%3E%3C/svg%3E'">
+                <h5 class="text-primary">@ViewBag.Correo</h5>
+                <p class="text-muted">Cliente</p>
+                <hr>
+                <a href="@Url.Action("Editar", "Cliente")" class="btn btn-primary btn-block">
+                    <i class="fas fa-edit"></i> Editar Información
+                </a>
+                <a href="@Url.Action("CerrarSesion", "Login")" class="btn btn-danger btn-block">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <!-- Información del Perfil -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-info-circle"></i> Información Personal
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Para ver tu información completa o actualizarla, haz clic en "Editar Perfil".
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="card border-left-primary h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Correo Electrónico
+                                        </div>
+                                        <div class="h6 mb-0 text-gray-800">@ViewBag.Correo</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-envelope fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-left-success h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Tipo de Usuario
+                                        </div>
+                                        <div class="h6 mb-0 text-gray-800">Cliente</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-user-check fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-chart-bar"></i> Accesos Rápidos
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <a href="@Url.Action("Index", "Mascota")" class="btn btn-primary btn-lg m-2">
+                        <i class="fas fa-dog"></i> Ver Mis Mascotas
+                    </a>
+                    <a href="@Url.Action("MisCitas", "Cliente")" class="btn btn-success btn-lg m-2">
+                        <i class="fas fa-calendar-alt"></i> Ver Mis Citas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+</style>

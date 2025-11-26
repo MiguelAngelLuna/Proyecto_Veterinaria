@@ -1,7 +1,30 @@
+using MivetOnline.Data.DAO;
+using MivetOnline.Data.Interfaces;
+using MivetOnline.Models.Cita;
+using MivetOnline.Models.Mascota;
+using MivetOnline.Models.Pago;
+using MivetOnline.Models.Usuario;
+using MivetOnline.Models.Usuario.Cliente;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// ===== REGISTRAR DAOs CON INYECCIÓN DE DEPENDENCIAS =====
+builder.Services.AddScoped<IClienteDAO, ClienteDAO>();
+builder.Services.AddScoped<IUsuarioDAO, UsuarioDAO>();
+builder.Services.AddScoped<IMascotaDAO, MascotaDAO>();
+builder.Services.AddScoped<IPagoDAO, PagoDAO>();
+builder.Services.AddScoped<ICitaDAO, CitaDAO>();
+
+// Configurar sesiones (para el login)
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -9,7 +32,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -18,10 +40,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Habilitar sesiones
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
