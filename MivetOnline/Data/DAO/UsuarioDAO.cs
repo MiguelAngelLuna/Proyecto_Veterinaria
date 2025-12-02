@@ -1,7 +1,7 @@
-﻿using MivetOnline.Data.Interfaces;
+﻿using Microsoft.Data.SqlClient;
+using MivetOnline.Data.Interfaces;
 using MivetOnline.Models.Usuario;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace MivetOnline.Data.DAO
 {
@@ -22,16 +22,16 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_verificarLogin", conn))
+                    using (var cmd = new SqlCommand("sp_verificarLogin", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@correo", correo);
                         cmd.Parameters.AddWithValue("@contraseña", contraseña);
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
@@ -56,15 +56,15 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_obtenerIdUsuario", conn))
+                    using (var cmd = new SqlCommand("sp_obtenerIdUsuario", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@correo", correo);
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
@@ -89,14 +89,14 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_listarDocumentos", conn))
+                    using (var cmd = new SqlCommand("sp_listarDocumentos", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {

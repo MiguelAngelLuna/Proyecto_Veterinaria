@@ -1,10 +1,5 @@
 using MivetOnline.Data.DAO;
 using MivetOnline.Data.Interfaces;
-using MivetOnline.Models.Cita;
-using MivetOnline.Models.Mascota;
-using MivetOnline.Models.Pago;
-using MivetOnline.Models.Usuario;
-using MivetOnline.Models.Usuario.Cliente;
 
 var builder = WebApplication.CreateBuilder(args);
 

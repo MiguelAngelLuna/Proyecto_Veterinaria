@@ -7,7 +7,7 @@ namespace MivetOnline.Data.Interfaces
         // Agregar una nueva mascota (Cliente registra su mascota)
         Task<bool> AgregarMascota(string nombre, string especie, string raza, DateTime fechaNac, long idUsuario);
 
-        // Listar mascotas de un cliente específico (por ID de usuario)
+        //Listar mascotas de un cliente específico (por ID de usuario)
         Task<List<Mascota>> ListarMascotasPorCliente(long idUsuario);
 
         // Actualizar datos de una mascota

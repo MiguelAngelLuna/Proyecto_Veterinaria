@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MivetOnline.Models;
 using VeterinariaWebApp.Models;
 
 namespace MivetOnline.Controllers

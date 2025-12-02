@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using MivetOnline.Data.Interfaces;
 using MivetOnline.Models.Mascota;
 using MivetOnline.Models.Usuario;
@@ -21,9 +21,9 @@ namespace MivetOnline.Data.DAO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_agregarMascota", conn))
+                    using (var cmd = new SqlCommand("sp_agregarMascota", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -58,15 +58,15 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_listarMascotasPorCliente", conn))
+                    using (var cmd = new SqlCommand("sp_listarMascotasPorCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id_usuario", idUsuario);
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
@@ -96,9 +96,9 @@ namespace MivetOnline.Data.DAO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_actualizarMascota", conn))
+                    using (var cmd = new SqlCommand("sp_actualizarMascota", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -128,9 +128,9 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_eliminarMascota", conn))
+                    using (var cmd = new SqlCommand("sp_eliminarMascota", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id_mascota", idMascota);

@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using MivetOnline.Data.Interfaces;
 using MivetOnline.Models.Usuario;
 using MivetOnline.Models.Usuario.Cliente;
@@ -21,9 +21,9 @@ namespace MivetOnline.Data.DAO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_agregarCliente", conn))
+                    using (var cmd = new SqlCommand("sp_agregarCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -55,14 +55,14 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_listarClientesFront", conn))
+                    using (var cmd = new SqlCommand("sp_listarClientesFront", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
@@ -96,14 +96,14 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_listarClientesBack", conn))
+                    using (var cmd = new SqlCommand("sp_listarClientesBack", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
@@ -138,9 +138,9 @@ namespace MivetOnline.Data.DAO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_actualizarCliente", conn))
+                    using (var cmd = new SqlCommand("sp_actualizarCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -173,15 +173,15 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_buscarCliente", conn))
+                    using (var cmd = new SqlCommand("sp_buscarCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id", id);
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
@@ -213,9 +213,9 @@ namespace MivetOnline.Data.DAO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_eliminarCliente", conn))
+                    using (var cmd = new SqlCommand("sp_eliminarCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id", id);
@@ -240,15 +240,15 @@ namespace MivetOnline.Data.DAO
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_listarCitasPorCliente", conn))
+                    using (var cmd = new SqlCommand("sp_listarCitasPorCliente", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ide_usr", ideUsuario);
 
                         await conn.OpenAsync();
-                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
