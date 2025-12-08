@@ -1,0 +1,116 @@
+@model VeterinariaWebApp.Models.Mascota.Mascota
+
+@{
+    ViewData["Title"] = "Detalle de Mascota";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+        <i class="fas fa-info-circle text-info"></i> Detalle de Mascota
+    </h1>
+    <a href="@Url.Action("Index", "Mascota")" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 bg-gradient-info text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-paw"></i> Información Completa de la Mascota
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-paw fa-5x text-info mb-3"></i>
+                    <h3 class="text-primary">@Model.Nombre</h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-left-info h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    ID de Mascota
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#@Model.IdMascota</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-left-success h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Especie
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Especie</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-left-warning h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Raza
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@(Model.Raza ?? "No especificada")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-left-primary h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Fecha de Nacimiento
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+                    <h5 class="text-muted mb-3">Acciones Disponibles</h5>
+                    <a href="@Url.Action("Editar", "Mascota", new { id = Model.IdMascota })" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar Información
+                    </a>
+                    <a href="@Url.Action("Eliminar", "Mascota", new { id = Model.IdMascota })" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Eliminar Mascota
+                    </a>
+                    <a href="@Url.Action("Index", "Mascota")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-left-info {
+        border-left: 0.25rem solid #36b9cc !important;
+    }
+
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+
+    .border-left-warning {
+        border-left: 0.25rem solid #f6c23e !important;
+    }
+
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+
+    .bg-gradient-info {
+        background: linear-gradient(180deg, #36b9cc 0%, #258391 100%);
+    }
+</style>

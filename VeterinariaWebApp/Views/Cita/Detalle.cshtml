@@ -1,0 +1,146 @@
+@model VeterinariaWebApp.Models.Usuario.CitaCliente
+
+@{
+    ViewData["Title"] = "Detalle de Cita";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+        <i class="fas fa-calendar-check text-info"></i> Detalle de Cita
+    </h1>
+    <a href="@Url.Action("MisCitas", "Cliente")" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 bg-info text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-info-circle"></i> Información de la Cita
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-left-primary h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    ID de Cita
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">#@Model.ide_cit</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-left-success h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Fecha y Hora
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.cal_cit.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-left-info h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Consultorio
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.con_cit</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-left-warning h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Veterinario
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">@Model.veterinario</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-left-success h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Mascota
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">@Model.mascota</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-left-info h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Especialidad
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">@Model.especialidad</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-left-warning h-100">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Especie
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">@Model.especie</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="text-muted mb-2">Monto Total</h5>
+                                <h2 class="text-primary mb-0">
+                                    <i class="fas fa-coins"></i> S/ @Model.mon_pag.ToString("N2")
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center">
+                    <h5 class="text-muted mb-3">Acciones Disponibles</h5>
+                    @if (Model.cal_cit > DateTime.Now)
+                    {
+                        <a href="@Url.Action("Cancelar", "Cita", new { id = Model.ide_cit })" class="btn btn-danger">
+                            <i class="fas fa-times-circle"></i> Cancelar Cita
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary p-3">Esta cita ya ha pasado</span>
+                    }
+                    <a href="@Url.Action("MisCitas", "Cliente")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a Mis Citas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-left-primary { border-left: 0.25rem solid #4e73df !important; }
+    .border-left-success { border-left: 0.25rem solid #1cc88a !important; }
+    .border-left-info { border-left: 0.25rem solid #36b9cc !important; }
+    .border-left-warning { border-left: 0.25rem solid #f6c23e !important; }
+</style>
