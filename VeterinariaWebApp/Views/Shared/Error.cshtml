@@ -1,0 +1,69 @@
+﻿@model VeterinariaWebApp.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Error
+                    </h5>
+                </div>
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-circle fa-5x text-danger mb-3"></i>
+                    <h2 class="text-danger">¡Oops! Algo salió mal</h2>
+                    <p class="text-muted">Ocurrió un error al procesar tu solicitud.</p>
+
+                    @if (Model.ShowRequestId)
+                    {
+                        <div class="alert alert-light">
+                            <strong>ID de Solicitud:</strong> <code>@Model.RequestId</code>
+                        </div>
+                    }
+
+                    <hr>
+
+                    <div class="mt-4">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Volver al Inicio
+                        </a>
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver Atrás
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                <div class="card shadow mt-4 border-warning">
+                    <div class="card-header bg-warning">
+                        <h6 class="mb-0">
+                            <i class="fas fa-code"></i> Modo de Desarrollo
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <strong>Advertencia:</strong> Estás en modo de desarrollo.
+                        </div>
+                        <p class="small mb-0">
+                            El ambiente de <strong>Development</strong> muestra información detallada de errores.
+                            <strong>No debe estar habilitado en producción</strong> ya que puede exponer información sensible.
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fc;
+    }
+</style>
