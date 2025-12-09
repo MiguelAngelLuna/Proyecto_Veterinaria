@@ -1,24 +1,24 @@
-using VeterinariaWebApp.Data.DAO;
-using VeterinariaWebApp.Data.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// ===== REGISTRAR DAOs CON INYECCIÓN DE DEPENDENCIAS =====
-builder.Services.AddScoped<IClienteDAO, ClienteDAO>();
-builder.Services.AddScoped<IUsuarioDAO, UsuarioDAO>();
-builder.Services.AddScoped<IMascotaDAO, MascotaDAO>();
-builder.Services.AddScoped<IPagoDAO, PagoDAO>();
-builder.Services.AddScoped<ICitaDAO, CitaDAO>();
-
-// Configurar sesiones (para el login)
+//  Servicios de sesión
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+});
+
+//  Registrar HttpClient con la URL base de tu API
+builder.Services.AddHttpClient("VeterinariaAPI", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7054/api/");
 });
 
 var app = builder.Build();
@@ -32,16 +32,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
-// Habilitar sesiones
-app.UseSession();
-
 app.UseAuthorization();
+
+//  Middleware de sesión 
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}"
+);
+
+// Configuración de Rotativa para generar PDFs
+RotativaConfiguration.Setup(app.Environment.WebRootPath, "../Rotativa");
 
 app.Run();

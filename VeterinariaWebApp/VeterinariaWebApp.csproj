@@ -8,6 +8,26 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\Cita\" />
+    <Folder Include="Models\Mascota\" />
+    <Folder Include="Models\Pago\" />
+    <Folder Include="Models\Usuario\Cliente\" />
+    <Folder Include="Models\Usuario\Veterinario\" />
+    <Folder Include="Models\Usuario\Recepcionista\" />
+    <Folder Include="Views\Cita\" />
+    <Folder Include="Views\Cliente\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Veterinario\" />
+    <Folder Include="Views\Recepcionista\" />
+    <Folder Include="Views\Pago\" />
   </ItemGroup>
 
 </Project>
