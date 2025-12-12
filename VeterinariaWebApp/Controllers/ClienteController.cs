@@ -250,6 +250,11 @@ namespace VeterinariaWebApp.Controllers
             if (!idCliente.HasValue)
                 return RedirectToAction("Index", "Login");
 
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+
             var client = GetClient();
             var json = JsonConvert.SerializeObject(modelo);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -258,14 +263,38 @@ namespace VeterinariaWebApp.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Mensaje = "Mascota registrada correctamente.";
-            }
-            else
-            {
-                ViewBag.Mensaje = "Error al registrar la mascota.";
+                TempData["Exito"] = $"¡Mascota '{modelo.Nombre}' registrada correctamente!";
+                return RedirectToAction("listaMascotasPorCliente", new { ide_usr = idCliente.Value });
             }
 
+            TempData["Error"] = "Error al registrar la mascota. Intente nuevamente.";
             return View(modelo);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DetalleMascota(long id)
+        {
+            var idCliente = HttpContext.Session.GetInt32("ClienteId");
+            if (!idCliente.HasValue)
+                return RedirectToAction("Index", "Login");
+
+            var client = GetClient();
+            var response = await client.GetAsync($"/api/Cliente/listarMascotas/{idCliente.Value}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var mascotas = JsonConvert.DeserializeObject<List<Mascota>>(data) ?? new List<Mascota>();
+                var mascota = mascotas.FirstOrDefault(m => m.IdMascota == id);
+
+                if (mascota != null)
+                {
+                    return View(mascota);
+                }
+            }
+
+            TempData["Error"] = "No se encontró la mascota solicitada.";
+            return RedirectToAction("listaMascotasPorCliente", new { ide_usr = idCliente.Value });
         }
 
         [HttpGet]
@@ -297,6 +326,15 @@ namespace VeterinariaWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ActualizarMascota(Mascota modelo)
         {
+            var clienteId = HttpContext.Session.GetInt32("ClienteId");
+            if (!clienteId.HasValue)
+                return RedirectToAction("Index", "Login");
+
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+
             var client = GetClient();
             var json = JsonConvert.SerializeObject(modelo);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -305,14 +343,12 @@ namespace VeterinariaWebApp.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                var clienteId = HttpContext.Session.GetInt32("ClienteId");
+                TempData["Exito"] = $"¡Mascota '{modelo.Nombre}' actualizada correctamente!";
                 return RedirectToAction("listaMascotasPorCliente", new { ide_usr = clienteId });
             }
-            else
-            {
-                ViewBag.Mensaje = "Error al actualizar la mascota.";
-                return View(modelo);
-            }
+
+            TempData["Error"] = "Error al actualizar la mascota.";
+            return View(modelo);
         }
 
         [HttpPost]

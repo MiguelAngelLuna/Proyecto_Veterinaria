@@ -70,5 +70,20 @@ public class CitaController : ControllerBase
         return Ok(lista);
     }
 
+    // Endpoint para actualizar el estado de una cita
+    [HttpPut("actualizarEstado/{id}")]
+    public async Task<ActionResult<string>> ActualizarEstadoCita(long id, [FromQuery] string estado)
+    {
+        // Validar que el estado sea válido
+        var estadosValidos = new[] { "P", "E", "A", "C" };
+        if (!estadosValidos.Contains(estado.ToUpper()))
+        {
+            return BadRequest("Estado no válido. Use: P (Pendiente), E (En Atención), A (Atendida), C (Cancelada)");
+        }
+
+        var mensaje = await Task.Run(() => new CitaDAO().ActualizarEstadoCita(id, estado.ToUpper()));
+        return Ok(new { success = true, message = mensaje });
+    }
+
 
 }

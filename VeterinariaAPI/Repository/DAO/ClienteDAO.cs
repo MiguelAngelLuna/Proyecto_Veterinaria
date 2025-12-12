@@ -182,12 +182,13 @@ public class ClienteDAO : ICliente
             {
                 ide_cit = Convert.ToInt64(dr["ide_cit"]),
                 cal_cit = Convert.ToDateTime(dr["cal_cit"]),
-                con_cit = Convert.ToInt32(dr["con_cit"]), 
+                con_cit = Convert.ToInt32(dr["con_cit"]),
                 veterinario = dr["veterinario"].ToString(),
                 especialidad = dr["especialidad"].ToString(),
                 mascota = dr["mascota"].ToString(),
                 especie = dr["especie"].ToString(),
-                mon_pag = Convert.ToDecimal(dr["mon_pag"])
+                mon_pag = Convert.ToDecimal(dr["mon_pag"]),
+                est_cit = dr["est_cit"].ToString() ?? "P"
             });
         }
         return listaCitaCliente;
@@ -281,7 +282,7 @@ public class ClienteDAO : ICliente
         try
         {
             cn.Open();
-       
+
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
