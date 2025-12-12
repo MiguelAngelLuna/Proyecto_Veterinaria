@@ -2,6 +2,7 @@ using VeterinariaAPI.Models.Cita;
 using VeterinariaAPI.Repository.Interfaces;
 using System.Data.SqlClient;
 using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace VeterinariaAPI.Repository.DAO;
 

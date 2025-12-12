@@ -4,6 +4,7 @@ using VeterinariaAPI.Models.Usuario.Cliente;
 using VeterinariaAPI.Models.Cita;
 using VeterinariaAPI.Models.Mascota;
 using VeterinariaAPI.Repository.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace VeterinariaAPI.Repository.DAO;
 
