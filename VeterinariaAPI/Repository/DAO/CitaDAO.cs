@@ -213,10 +213,59 @@ public class CitaDAO : ICita
         return mensaje;
     }
 
+    // ==================== HISTORIAL MÉDICO ====================
 
+    // Agregar o actualizar historial médico
+    public string AgregarHistorialMedico(HistorialMedicoDTO dto)
+    {
+        string mensaje = "";
+        using var cn = new SqlConnection(_connectionString);
+        using var cmd = new SqlCommand("sp_agregarHistorialMedico", cn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@ide_cit", dto.IdCita);
+        cmd.Parameters.AddWithValue("@sintomas", (object?)dto.Sintomas ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@diagnostico", dto.Diagnostico);
+        cmd.Parameters.AddWithValue("@tratamiento", dto.Tratamiento);
+        cmd.Parameters.AddWithValue("@medicamentos", (object?)dto.Medicamentos ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@observaciones", (object?)dto.Observaciones ?? DBNull.Value);
+        try
+        {
+            cn.Open();
+            cmd.ExecuteNonQuery();
+            mensaje = "Historial médico guardado correctamente";
+        }
+        catch (Exception ex)
+        {
+            mensaje = "Error al guardar historial médico: " + ex.Message;
+        }
+        return mensaje;
+    }
 
+    // Obtener historial médico por ID de cita
+    public HistorialMedico? ObtenerHistorialPorCita(long idCita)
+    {
+        HistorialMedico? historial = null;
+        using var cn = new SqlConnection(_connectionString);
+        using var cmd = new SqlCommand("sp_obtenerHistorialPorCita", cn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@ide_cit", idCita);
 
-
-
-
+        cn.Open();
+        using var dr = cmd.ExecuteReader();
+        if (dr.Read())
+        {
+            historial = new HistorialMedico
+            {
+                ide_his = Convert.ToInt64(dr["ide_his"]),
+                ide_cit = Convert.ToInt64(dr["ide_cit"]),
+                sintomas = dr["sintomas"] == DBNull.Value ? null : dr["sintomas"].ToString(),
+                diagnostico = dr["diagnostico"].ToString() ?? "",
+                tratamiento = dr["tratamiento"].ToString() ?? "",
+                medicamentos = dr["medicamentos"] == DBNull.Value ? null : dr["medicamentos"].ToString(),
+                observaciones = dr["observaciones"] == DBNull.Value ? null : dr["observaciones"].ToString(),
+                fecha_atencion = Convert.ToDateTime(dr["fecha_atencion"])
+            };
+        }
+        return historial;
+    }
 }

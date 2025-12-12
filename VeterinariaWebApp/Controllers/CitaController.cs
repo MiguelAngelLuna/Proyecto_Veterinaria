@@ -44,7 +44,7 @@ public class CitaController : Controller
         return aCitas;
     }
 
-    // Método corregido: listadoVeterinario
+ 
     public List<Veterinario> listadoVeterinario()
     {
         List<Veterinario> aVeterinarios = new List<Veterinario>();
@@ -69,7 +69,7 @@ public class CitaController : Controller
         return aVeterinarios;
     }
 
-    // Método corregido: listadoCliente
+    //  listadoCliente
     public List<Cliente> listadoCliente()
     {
         List<Cliente> aClientes = new List<Cliente>();
@@ -324,7 +324,7 @@ public class CitaController : Controller
         var mascotaData = await mascotaResponse.Content.ReadAsStringAsync();
         var mascota = JsonConvert.DeserializeObject<MascotaConCliente>(mascotaData);
 
-        // 3. Ahora, con el IdUsuario del cliente, obtener todas sus mascotas
+        // 3. con el IdUsuario del cliente, obtener todas sus mascotas
         var todasLasMascotasResponse = await _httpClient.GetAsync($"{_baseUri}/Cliente/listarMascotas/{mascota.IdUsuario}");
         List<Mascota> mascotasDelDueño = new List<Mascota>();
         if (todasLasMascotasResponse.IsSuccessStatusCode)
@@ -478,6 +478,48 @@ public class CitaController : Controller
             FileName = $"DetalleCita-{hoy}.pdf",
             PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
             PageSize = Rotativa.AspNetCore.Options.Size.A5
+        };
+    }
+
+    // Generar PDF con historial médico (para citas atendidas del cliente)
+    public async Task<IActionResult> GenerarHistorialCitaPDF(long id)
+    {
+        var clienteId = HttpContext.Session.GetInt32("ClienteId");
+        if (clienteId == null || clienteId == 0)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        // Obtener las citas del cliente con historial
+        CitaCliente? cita = null;
+        try
+        {
+            string url = $"{_baseUri}/Cliente/listaCitasPorCliente/{clienteId}";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var citas = JsonConvert.DeserializeObject<List<CitaCliente>>(data);
+                cita = citas?.FirstOrDefault(c => c.ide_cit == id);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener cita: {ex.Message}");
+        }
+
+        if (cita == null)
+        {
+            TempData["Error"] = "No se encontró la cita especificada.";
+            return RedirectToAction("ListaCitaPorCliente", "Cliente");
+        }
+
+        String hoy = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        return new ViewAsPdf("GenerarHistorialCitaPDF", cita)
+        {
+            FileName = $"HistorialMedico-{cita.mascota}-{hoy}.pdf",
+            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+            PageSize = Rotativa.AspNetCore.Options.Size.A4
         };
     }
 

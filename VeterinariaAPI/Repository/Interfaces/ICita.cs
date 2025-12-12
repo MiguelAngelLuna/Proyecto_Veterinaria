@@ -13,4 +13,8 @@ public interface ICita
     Cita BuscarCitaFront(long id);
     void EliminarCita(long id);
     IEnumerable<Cita> ListarCitasPorFecha(int dia, int mes, int año);
+
+    // Historial Médico
+    string AgregarHistorialMedico(HistorialMedicoDTO dto);
+    HistorialMedico? ObtenerHistorialPorCita(long idCita);
 }

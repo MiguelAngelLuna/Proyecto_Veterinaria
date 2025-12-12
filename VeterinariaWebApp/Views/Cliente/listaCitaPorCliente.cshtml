@@ -34,7 +34,6 @@
         </div>
     }
 
-  
 
         <!-- Vista de tabla alternativa -->
         <div class="card shadow mb-4 mt-4">
@@ -83,18 +82,28 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="@Url.Action("GenerarDetalleCitaPDF", "Cita", new { id = item.ide_cit })" 
-                                           class="btn btn-danger btn-sm" title="PDF">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </a>
+                                        @if (item.est_cit == "A" && item.TieneHistorial)
+                                        {
+                                            <a href="@Url.Action("GenerarHistorialCitaPDF", "Cita", new { id = item.ide_cit })"
+                                               class="btn btn-danger btn-sm" title="Historial Médico PDF">
+                                                <i class="fas fa-file-medical"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("GenerarDetalleCitaPDF", "Cita", new { id = item.ide_cit })"
+                                               class="btn btn-danger btn-sm" title="PDF">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        }
                                         @if (item.est_cit == "P")
                                         {
-                                            <a href="@Url.Action("EditarCitaCliente", "Cita", new { id = item.ide_cit })" 
+                                            <a href="@Url.Action("EditarCitaCliente", "Cita", new { id = item.ide_cit })"
                                                class="btn btn-warning btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm btn-cancelar-cita" 
-                                                    data-id="@item.ide_cit" data-fecha="@item.cal_cit.ToString("dd/MM/yyyy HH:mm")" 
+                                            <button type="button" class="btn btn-danger btn-sm btn-cancelar-cita"
+                                                    data-id="@item.ide_cit" data-fecha="@item.cal_cit.ToString("dd/MM/yyyy HH:mm")"
                                                     data-mascota="@item.mascota" title="Cancelar">
                                                 <i class="fas fa-times"></i>
                                             </button>
@@ -202,42 +211,80 @@
         border-width: 2px !important;
     }
 
-    .cita-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        .cita-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .cita-card .card-header {
+            border-radius: 13px 13px 0 0 !important;
+            border-bottom: none;
+        }
+
+    .bg-success-light {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     }
 
-    .cita-card .card-header {
-        border-radius: 13px 13px 0 0 !important;
-        border-bottom: none;
+    .bg-warning-light {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
     }
 
-    .bg-success-light { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); }
-    .bg-warning-light { background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); }
-    .bg-info-light { background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%); }
-    .bg-danger-light { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); }
-    .bg-secondary-light { background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%); }
+    .bg-info-light {
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    }
+
+    .bg-danger-light {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    }
+
+    .bg-secondary-light {
+        background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%);
+    }
 
     .cita-info .info-item {
         padding: 8px 0;
         border-bottom: 1px dashed #e9ecef;
     }
 
-    .cita-info .info-item:last-child {
-        border-bottom: none;
+        .cita-info .info-item:last-child {
+            border-bottom: none;
+        }
+
+    .border-left-primary {
+        border-left: 4px solid #4e73df !important;
     }
 
-    .border-left-primary { border-left: 4px solid #4e73df !important; }
-    .border-left-success { border-left: 4px solid #28a745 !important; }
-    .border-left-warning { border-left: 4px solid #ffc107 !important; }
-    .border-left-info { border-left: 4px solid #17a2b8 !important; }
-    .border-left-danger { border-left: 4px solid #dc3545 !important; }
+    .border-left-success {
+        border-left: 4px solid #28a745 !important;
+    }
 
-    .empty-state i { opacity: 0.3; }
+    .border-left-warning {
+        border-left: 4px solid #ffc107 !important;
+    }
 
-    .btn-group .btn { border-radius: 0; }
-    .btn-group .btn:first-child { border-radius: 5px 0 0 5px; }
-    .btn-group .btn:last-child { border-radius: 0 5px 5px 0; }
+    .border-left-info {
+        border-left: 4px solid #17a2b8 !important;
+    }
+
+    .border-left-danger {
+        border-left: 4px solid #dc3545 !important;
+    }
+
+    .empty-state i {
+        opacity: 0.3;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+    }
+
+        .btn-group .btn:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+
+        .btn-group .btn:last-child {
+            border-radius: 0 5px 5px 0;
+        }
 
     .table th {
         font-weight: 600;

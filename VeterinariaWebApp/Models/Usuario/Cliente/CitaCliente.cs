@@ -25,11 +25,26 @@ public class CitaCliente
     [DisplayName("ESPECIE")]
     public string especie { get; set; }
 
+    public string raza { get; set; }
+
     [DisplayName("MONTO A PAGAR")]
     public decimal mon_pag { get; set; }
 
+    public string metodo_pago { get; set; }
+
     [DisplayName("ESTADO")]
     public string est_cit { get; set; } = "P"; // P=Pendiente, E=EnAtención, A=Atendida, C=Cancelada
+
+    // ========== HISTORIAL MÉDICO (solo cuando est_cit = 'A') ==========
+    public string? sintomas { get; set; }
+    public string? diagnostico { get; set; }
+    public string? tratamiento { get; set; }
+    public string? medicamentos { get; set; }
+    public string? observaciones { get; set; }
+    public DateTime? fecha_atencion { get; set; }
+
+    // Indica si tiene historial médico
+    public bool TieneHistorial => !string.IsNullOrEmpty(diagnostico);
 
     // Propiedad calculada para mostrar el estado en texto
     public string EstadoDescripcion => est_cit switch
@@ -59,5 +74,18 @@ public class CitaCliente
         "A" => "fa-check-circle",
         "C" => "fa-times-circle",
         _ => "fa-question"
+    };
+
+    // Emoji de especie
+    public string EspecieEmoji => especie?.ToLower() switch
+    {
+        "perro" => "🐕",
+        "gato" => "🐱",
+        "ave" => "🐦",
+        "conejo" => "🐰",
+        "hámster" => "🐹",
+        "pez" => "🐠",
+        "tortuga" => "🐢",
+        _ => "🐾"
     };
 }

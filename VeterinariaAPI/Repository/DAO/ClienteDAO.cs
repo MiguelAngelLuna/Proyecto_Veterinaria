@@ -171,7 +171,7 @@ public class ClienteDAO : ICliente
     {
         var listaCitaCliente = new List<CitaCliente>();
         using var cn = new SqlConnection(_connectionString);
-        using var cmd = new SqlCommand("sp_listarCitasPorCliente", cn);
+        using var cmd = new SqlCommand("sp_listarCitasPorClienteConHistorial", cn);
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.Parameters.AddWithValue("@ide_usr", ide_usr);
         cn.Open();
@@ -187,8 +187,17 @@ public class ClienteDAO : ICliente
                 especialidad = dr["especialidad"].ToString(),
                 mascota = dr["mascota"].ToString(),
                 especie = dr["especie"].ToString(),
+                raza = dr["raza"].ToString(),
                 mon_pag = Convert.ToDecimal(dr["mon_pag"]),
-                est_cit = dr["est_cit"].ToString() ?? "P"
+                metodo_pago = dr["metodo_pago"].ToString(),
+                est_cit = dr["est_cit"].ToString() ?? "P",
+                // Historial médico (puede ser NULL)
+                sintomas = dr["sintomas"] == DBNull.Value ? null : dr["sintomas"].ToString(),
+                diagnostico = dr["diagnostico"] == DBNull.Value ? null : dr["diagnostico"].ToString(),
+                tratamiento = dr["tratamiento"] == DBNull.Value ? null : dr["tratamiento"].ToString(),
+                medicamentos = dr["medicamentos"] == DBNull.Value ? null : dr["medicamentos"].ToString(),
+                observaciones = dr["observaciones"] == DBNull.Value ? null : dr["observaciones"].ToString(),
+                fecha_atencion = dr["fecha_atencion"] == DBNull.Value ? null : Convert.ToDateTime(dr["fecha_atencion"])
             });
         }
         return listaCitaCliente;
