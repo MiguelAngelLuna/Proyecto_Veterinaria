@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//  Servicios de sesi�n
+// 🔵 Servicios de sesión
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -15,8 +15,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-//  Registrar HttpClient con la URL base de tu API
-builder.Services.AddHttpClient("VeterinariaAPI", client =>
+// 🔵 Registrar HttpClient con la URL base de tu API
+builder.Services.AddHttpClient("ClinicaAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7054/api/");
 });
@@ -35,7 +35,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-//  Middleware de sesi�n 
+// 🔵 Middleware de sesión (DEBE estar antes de MapControllerRoute)
 app.UseSession();
 
 app.MapControllerRoute(
@@ -43,7 +43,7 @@ app.MapControllerRoute(
     pattern: "{controller=Login}/{action=Index}/{id?}"
 );
 
-// Configuraci�n de Rotativa para generar PDFs
+// Configuración de Rotativa para generar PDFs
 RotativaConfiguration.Setup(app.Environment.WebRootPath, "../Rotativa");
 
 app.Run();
