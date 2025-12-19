@@ -75,11 +75,13 @@
                         <h6 class="collapse-header">Gestión de Veterinarios:</h6>
                         <a class="collapse-item" href="@Url.Action("listarVeterinarios", "Recepcionista")">Ver Veterinarios</a>
                         <a class="collapse-item" href="@Url.Action("NuevoVeterinario", "Recepcionista")">Agregar Veterinario</a>
+                 
                     </div>
                 </div>
             </li>
 
-            <hr class="sidebar-divider" />
+
+
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCitas" aria-expanded="true" aria-controls="collapseCitas">
@@ -89,10 +91,16 @@
                 <div id="collapseCitas" class="collapse" aria-labelledby="headingCitas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Gestión de Citas:</h6>
-                        <a class="collapse-item" href="@Url.Action("ListadoCitas", "Cita")">Ver Citas</a>
+                        <a class="collapse-item" href="@Url.Action("CitasPendientes", "Cita")">Citas Pendientes</a>
+                        <a class="collapse-item" href="@Url.Action("CitasVencidas", "Cita")">Citas Vencidas</a>
+                        <a class="collapse-item" href="@Url.Action("CitasAtendidas", "Cita")">Citas Atendidas</a>
+                        <a class="collapse-item" href="@Url.Action("CitasCanceladas", "Cita")">Citas Canceladas</a>
                     </div>
                 </div>
             </li>
+
+
+
 
             <hr class="sidebar-divider" />
 
@@ -144,9 +152,14 @@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
+                        <li class="nav-item d-none d-sm-flex align-items-center mr-3">
+                            <span class="text-gray-600 small">
+                                <i class="fas fa-hand-sparkles mr-1"></i>¡Hola, <strong>@(Context.Session.GetString("NombreUsuario") ?? "Usuario")</strong>!
+                            </span>
+                        </li>
+
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Recepcionista</span>
                                 <img class="img-profile rounded-circle" src="~/img/undraw_profile.svg">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
