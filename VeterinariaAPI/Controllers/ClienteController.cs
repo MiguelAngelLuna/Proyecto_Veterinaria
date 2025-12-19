@@ -58,7 +58,7 @@ public class ClienteController : ControllerBase
         return Ok(lista);
     }
 
-    //  CORREGIDO: Ahora recibe el id_usuario como parámetro
+
     [HttpPost("agregarMascota/{id_usuario}")]
     public async Task<ActionResult<string>> AgregarMascota(long id_usuario, [FromBody] Mascota mascota)
     {
