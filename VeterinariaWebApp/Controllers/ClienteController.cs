@@ -372,29 +372,31 @@ namespace VeterinariaWebApp.Controllers
             return View(modelo);
         }
 
-        [HttpPost]
+
+
+
+
+        [HttpDelete]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> EliminarMascota(long id)
+        public async Task<IActionResult> EliminarMascota(long id, bool confirmar = false)
         {
             var client = GetClient();
-            var response = await client.DeleteAsync($"/api/Cliente/eliminarMascota/{id}");
+            var url = $"/api/Cliente/eliminarMascota/{id}?confirmar={confirmar.ToString().ToLower()}";
+            var response = await client.DeleteAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 var mensaje = await response.Content.ReadAsStringAsync();
-
-                if (mensaje.Contains("correctamente"))
-                {
-                    return Json(new { success = true, message = "Mascota eliminada correctamente." });
-                }
-                else
-                {
-                    return Json(new { success = false, message = mensaje.Replace("\"", "") });
-                }
+                return Json(new { success = true, message = mensaje });
             }
-
-            return Json(new { success = false, message = "Error al intentar eliminar la mascota." });
+            else
+            {
+                return Json(new { success = false, message = "Error al intentar archivar la mascota." });
+            }
         }
+
+
+
 
         #endregion
 

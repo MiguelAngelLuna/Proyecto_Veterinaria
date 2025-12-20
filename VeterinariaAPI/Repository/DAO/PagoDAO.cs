@@ -39,6 +39,60 @@ public class PagoDAO : IPago
         return pagos;
     }
 
+
+
+    // Listar PAGOS PENDIENTES para Recep
+    public IEnumerable<Pago> ListarPagosPendientes()
+    {
+        List<Pago> pagos = new List<Pago>();
+        using var cn = new SqlConnection(_connectionString);
+        using var cmd = new SqlCommand("sp_listarPagosPendientes", cn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cn.Open();
+        using var dr = cmd.ExecuteReader();
+        while (dr.Read())
+        {
+            pagos.Add(new Pago()
+            {
+                IdPago = Convert.ToInt64(dr["ide_pag"]),
+                HoraPago = Convert.ToDateTime(dr["hor_pag"]),
+                MontoPago = Convert.ToDecimal(dr["mon_pag"]),
+                TipoPago = dr["nom_pay"].ToString(),
+                CorreoCliente = dr["cor_usr"].ToString(),
+                NombreCliente = dr["nombre_completo"].ToString(),
+                EstadoPago = "Pendiente" 
+            });
+        }
+        return pagos;
+    }
+
+    //  Listar PAGOS REALIZADOS Recep
+    public IEnumerable<Pago> ListarPagosRealizados()
+    {
+        List<Pago> pagos = new List<Pago>();
+        using var cn = new SqlConnection(_connectionString);
+        using var cmd = new SqlCommand("sp_listarPagosRealizados", cn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cn.Open();
+        using var dr = cmd.ExecuteReader();
+        while (dr.Read())
+        {
+            pagos.Add(new Pago()
+            {
+                IdPago = Convert.ToInt64(dr["ide_pag"]),
+                HoraPago = Convert.ToDateTime(dr["hor_pag"]),
+                MontoPago = Convert.ToDecimal(dr["mon_pag"]),
+                TipoPago = dr["nom_pay"].ToString(),
+                CorreoCliente = dr["cor_usr"].ToString(),
+                NombreCliente = dr["nombre_completo"].ToString(),
+                EstadoPago = "Realizado" 
+            });
+        }
+        return pagos;
+    }
+
+
+
     public IEnumerable<Pago> ListarPagosPorCliente(long id)
     {
         List<Pago> pagos = new List<Pago>();

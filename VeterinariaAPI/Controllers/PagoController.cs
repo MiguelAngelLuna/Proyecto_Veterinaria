@@ -23,6 +23,25 @@ public class PagoController : ControllerBase
     }
 
 
+    [HttpGet("ListarPagosPendientes")]
+    public async Task<ActionResult<List<Pago>>> ListarPagosPendientes()
+    {
+        var lista = await Task.Run(() => new PagoDAO().ListarPagosPendientes());
+        return Ok(lista);
+    }
+
+
+    [HttpGet("ListarPagosRealizados")]
+    public async Task<ActionResult<List<Pago>>> ListarPagosRealizados()
+    {
+        var lista = await Task.Run(() => new PagoDAO().ListarPagosRealizados());
+        return Ok(lista);
+    }
+
+
+
+
+
 
     [HttpGet("ListarPagosPorCliente/{idUsuario}")]
     public ActionResult<IEnumerable<Pago>> ListarPagosPorCliente(long idUsuario)

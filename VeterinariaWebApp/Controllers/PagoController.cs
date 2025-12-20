@@ -68,7 +68,7 @@ public class PagoController : Controller
     {
         List<Pago> aPagos = new List<Pago>();
         if (token == 0)
-            return aPagos; // Devuelve lista vacía si no hay token
+            return aPagos;
 
         try
         {
@@ -91,6 +91,72 @@ public class PagoController : Controller
         }
         return aPagos;
     }
+
+
+    public async Task<IActionResult> PagosPendientes()
+    {
+        var pagos = await ListarPagosPendientes();
+        return View(pagos);
+    }
+
+
+
+    //Listar PAGOS PENDIENTES
+    public async Task<List<Pago>> ListarPagosPendientes()
+    {
+        List<Pago> pagos = new List<Pago>();
+        try
+        {
+            string url = $"{_baseUri}/Pago/ListarPagosPendientes";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                pagos = JsonConvert.DeserializeObject<List<Pago>>(data) ?? new List<Pago>();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener pagos pendientes: {ex.Message}");
+        }
+        return pagos;
+    }
+
+
+
+    // Listar PAGOS REALIZADOS 
+    public async Task<List<Pago>> ListarPagosRealizados()
+    {
+        List<Pago> pagos = new List<Pago>();
+        try
+        {
+            string url = $"{_baseUri}/Pago/ListarPagosRealizados";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                pagos = JsonConvert.DeserializeObject<List<Pago>>(data) ?? new List<Pago>();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener pagos realizados: {ex.Message}");
+        }
+        return pagos;
+    }
+
+
+    public async Task<IActionResult> PagosRealizados()
+    {
+        var pagos = await ListarPagosRealizados();
+        return View(pagos);
+    }
+
+
+
+
+
+
 
 
     public List<UserDoc> listadoTipoDocumentos()
