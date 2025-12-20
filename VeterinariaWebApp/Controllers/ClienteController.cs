@@ -184,6 +184,7 @@ namespace VeterinariaWebApp.Controllers
             return new Cliente();
         }
 
+
         public async Task<IActionResult> listaCitaPorCliente(long ide_usr)
         {
             if (ide_usr == 0)
@@ -192,6 +193,7 @@ namespace VeterinariaWebApp.Controllers
             var citas = await aCitaCliente(ide_usr);
             return View(citas);
         }
+
 
         public async Task<IActionResult> DetalleCliente(long id)
         {
@@ -217,6 +219,8 @@ namespace VeterinariaWebApp.Controllers
 
         #region Mascotas
 
+
+
         public async Task<IActionResult> listaMascotasPorCliente(long ide_usr)
         {
             if (ide_usr == 0)
@@ -234,6 +238,12 @@ namespace VeterinariaWebApp.Controllers
             return View(new List<Mascota>());
         }
 
+
+
+
+
+
+
         public IActionResult AgregarMascota()
         {
             var idCliente = HttpContext.Session.GetInt32("ClienteId");
@@ -242,6 +252,11 @@ namespace VeterinariaWebApp.Controllers
 
             return View();
         }
+
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> AgregarMascota(Mascota modelo)
@@ -270,6 +285,12 @@ namespace VeterinariaWebApp.Controllers
             TempData["Error"] = "Error al registrar la mascota. Intente nuevamente.";
             return View(modelo);
         }
+
+
+
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> DetalleMascota(long id)

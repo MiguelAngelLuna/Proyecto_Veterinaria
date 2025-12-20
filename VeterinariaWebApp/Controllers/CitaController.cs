@@ -188,23 +188,38 @@ public class CitaController : Controller
 
     //  Cita/IniciarCreacionCita
     [HttpGet]
-    public IActionResult IniciarCreacionCita()
+    public async Task<IActionResult> IniciarCreacionCita()
     {
+        var pagoPendiente = await ObtenerPagoPendiente();
 
-        return RedirectToAction("Crear", "Pago");
+        if (pagoPendiente != null)
+        {
+            // Si hay un pago pendiente, redirigir directamente al formulario de cita
+            return RedirectToAction("nuevaCita", new { PagoId = pagoPendiente.IdPago });
+        }
+        else
+        {
+            // Si no hay un pago pendiente, redirigir al formulario de pago
+            return RedirectToAction("Crear", "Pago");
+        }
     }
 
 
 
-
     //  Cita/nuevaCita
-    // GET: Cita/nuevaCita
+ 
     [HttpGet]
     public IActionResult nuevaCita(int PagoId)
     {
         int? idCliente = HttpContext.Session.GetInt32("ClienteId");
         if (idCliente == null || idCliente == 0)
             return RedirectToAction("Index", "Login");
+
+        // 👇 NUEVA LÓGICA: Establecer el mensaje si hay un PagoId
+        if (PagoId > 0)
+        {
+            ViewBag.MensajePago = "Pago registrado: Su pago ya fue procesado. Al confirmar la cita, quedará agendada automáticamente.";
+        }
 
         CargarViewBagsParaCita(idCliente.Value);
 
@@ -606,6 +621,35 @@ public class CitaController : Controller
             PageSize = Rotativa.AspNetCore.Options.Size.A4
         };
     }
+
+
+    private async Task<Pago?> ObtenerPagoPendiente()
+    {
+        try
+        {
+            var idCliente = HttpContext.Session.GetInt32("ClienteId");
+            if (idCliente == null || idCliente == 0)
+                return null;
+
+            var response = await _httpClient.GetAsync($"{_baseUri}/Pago/ListarPagosPorCliente/{idCliente}");
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var pagos = JsonConvert.DeserializeObject<List<Pago>>(data) ?? new List<Pago>();
+                return pagos.FirstOrDefault(p => p.EstadoPago == "Pendiente");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener pago pendiente: {ex.Message}");
+        }
+        return null;
+    }
+
+
+
+
+
 
 
     public IActionResult Index()

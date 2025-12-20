@@ -43,9 +43,9 @@ public class PagoDAO : IPago
     {
         List<Pago> pagos = new List<Pago>();
         using var cn = new SqlConnection(_connectionString);
-        using var cmd = new SqlCommand("sp_listarPagosPorCliente", cn); 
+        using var cmd = new SqlCommand("sp_listarPagosPorCliente", cn);
         cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ide_usr", id); 
+        cmd.Parameters.AddWithValue("@ide_usr", id);
         cn.Open();
         using var dr = cmd.ExecuteReader();
         while (dr.Read())
@@ -56,8 +56,10 @@ public class PagoDAO : IPago
                 HoraPago = Convert.ToDateTime(dr[1]),
                 MontoPago = Convert.ToDecimal(dr[2]),
                 TipoPago = dr[3].ToString(),
-                CorreoCliente = dr[4].ToString(), 
-                NombreCliente = dr[5].ToString()  
+                CorreoCliente = dr[4].ToString(),
+                NombreCliente = dr[5].ToString(),
+             
+                EstadoPago = dr["EstadoPago"].ToString()
             });
         }
         return pagos;
@@ -143,6 +145,7 @@ public class PagoDAO : IPago
         return respuesta;
     }
 
+
     public string EliminarPago(long id)
     {
         string respuesta = "";
@@ -155,4 +158,5 @@ public class PagoDAO : IPago
         respuesta = "Pago eliminado correctamente";
         return respuesta;
     }
+
 }

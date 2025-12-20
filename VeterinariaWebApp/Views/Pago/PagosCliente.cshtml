@@ -23,6 +23,7 @@
                         <th>@Html.DisplayNameFor(model => model.TipoPago)</th>
                         <th>@Html.DisplayNameFor(model => model.NombreCliente)</th>
                         <th>@Html.DisplayNameFor(model => model.CorreoCliente)</th>
+                        <th>@Html.DisplayNameFor(model => model.EstadoPago)</th> <!-- Nueva columna -->
                         <th>ACCIONES</th>
                     </tr>
                 </thead>
@@ -37,9 +38,30 @@
                             <td>@Html.DisplayFor(modelItem => item.NombreCliente)</td>
                             <td>@Html.DisplayFor(modelItem => item.CorreoCliente)</td>
                             <td>
+                                @if (item.EstadoPago == "Pendiente")
+                                {
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Realizado</span>
+                                }
+                            </td>
+                            <td>
                                 <a href="@Url.Action("DetallePago", "Pago", new { id = item.IdPago })" class="btn btn-info me-2">
                                     <i class="fas fa-info-circle"></i>
                                 </a>
+                                <!-- Botón de Eliminar (solo para pagos pendientes) -->
+                                @if (item.EstadoPago == "Pendiente")
+                                {
+                                    <form asp-action="EliminarPago" asp-controller="Pago" asp-route-id="@item.IdPago" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('¿Está seguro de eliminar este pago pendiente?');">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                }
                             </td>
                         </tr>
                     }

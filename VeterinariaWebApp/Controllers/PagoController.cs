@@ -67,6 +67,9 @@ public class PagoController : Controller
     public List<Pago> listadoPagosPorCliente(long token)
     {
         List<Pago> aPagos = new List<Pago>();
+        if (token == 0)
+            return aPagos; // Devuelve lista vacía si no hay token
+
         try
         {
             string url = $"{_baseUri}/Pago/ListarPagosPorCliente/{token}";
@@ -74,7 +77,12 @@ public class PagoController : Controller
             if (response.IsSuccessStatusCode)
             {
                 var data = response.Content.ReadAsStringAsync().Result;
-                aPagos = JsonConvert.DeserializeObject<List<Pago>>(data);
+                aPagos = JsonConvert.DeserializeObject<List<Pago>>(data) ?? new List<Pago>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+       
+                Console.WriteLine("Token inválido o usuario no autenticado.");
             }
         }
         catch (Exception ex)
@@ -158,11 +166,11 @@ public class PagoController : Controller
     public IActionResult PagosCliente()
     {
         long token = long.Parse(HttpContext.Session.GetString("token"));
-        var pagos = listadoPagosPorCliente(token); 
-        return View(pagos); 
+        var pagos = listadoPagosPorCliente(token);
+        return View(pagos);
     }
 
- 
+
     public IActionResult DetallePago(long id)
     {
         if (id == 0)
@@ -232,6 +240,43 @@ public class PagoController : Controller
             return View(obj);
         }
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EliminarPago(long id)
+    {
+        try
+        {
+            // Obtener el ID del cliente desde la sesión
+            long token = long.Parse(HttpContext.Session.GetString("token"));
+
+            // Llamar al endpoint de la API para eliminar el pago
+            string url = $"{_baseUri}/Pago/EliminarPago/{id}";
+            var response = _httpClient.DeleteAsync(url).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensaje"] = "El pago ha sido eliminado correctamente.";
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                TempData["Error"] = "No se puede eliminar un pago que ya está asociado a una cita.";
+            }
+            else
+            {
+                TempData["Error"] = "Error al eliminar el pago.";
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = $"Error interno: {ex.Message}";
+        }
+
+        return RedirectToAction(nameof(PagosCliente));
+    }
+
+
+
 
     public IActionResult Index()
     {

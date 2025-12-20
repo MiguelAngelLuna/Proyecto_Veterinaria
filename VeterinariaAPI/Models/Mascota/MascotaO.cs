@@ -8,4 +8,6 @@ public class MascotaO
     public string raz_mas { get; set; } 
     public DateTime fna_mas { get; set; } 
     public long ide_cli { get; set; } // ID del cliente (dueño)
+
+   
 }

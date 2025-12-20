@@ -247,7 +247,9 @@ public class ClienteDAO : ICliente
                 Nombre = dr["Nombre"].ToString(),
                 Especie = dr["Especie"].ToString(),
                 Raza = dr["Raza"].ToString(),
-                FechaNacimiento = Convert.ToDateTime(dr["FechaNacimiento"])
+                FechaNacimiento = Convert.ToDateTime(dr["FechaNacimiento"]),
+              
+            
             });
         }
         return listaMascotas;
